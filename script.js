@@ -1,51 +1,28 @@
-cells = document.querySelectorAll('.cell');
-resultMessage = document.querySelector('.result-message');
+var registeredUsers = [];
 
-let currentPlayer = 'X';
-let gameBoard = ['', '', '', '', '', '', '', '', ''];
-let gameActive = true;
+document.getElementById("registrationForm").addEventListener("submit", function(event) {
+    event.preventDefault();
 
-function handleCellClick(event) {
-    cell = event.target;
-    cellIndex = cell.getAttribute('data-cell-index');
+    var username = document.getElementById("username").value;
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
 
-    if (gameBoard[cellIndex] !== '' || !gameActive) return;
-
-    gameBoard[cellIndex] = currentPlayer;
-    cell.textContent = currentPlayer;
-    cell.classList.add(currentPlayer);
-
-    if (checkWin()) {
-        gameActive = false;
-        resultMessage.textContent = `GAME OVER!!...${currentPlayer} wins!...`;
-        return;
-    }
-
-    if (gameBoard.every(cell => cell !== '')) {
-        gameActive = false;
-        resultMessage.textContent = 'Its a draw!';
-        return;
-    }
-
-    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-}
-
-function checkWin() {
-    const winPatterns = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        [0, 4, 8],
-        [2, 4, 6]
-    ];
-
-    return winPatterns.some(pattern => {
-        const [a, b, c] = pattern;
-        return gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c];
+    var isAlreadyRegistered = registeredUsers.some(function(user) {
+        return user.username === username && user.email === email && user.password === password;
     });
-}
 
-cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+    if (isAlreadyRegistered) {
+        var errorMessage = "You have already registered with the same name, email, and password.";
+        document.getElementById("message").textContent = errorMessage;
+    } else {
+
+
+        registeredUsers.push({ username: username, email: email, password: password });
+
+        var successMessage = "You have Successfully registered " + username + " !!!";
+        document.getElementById("message").textContent = successMessage;
+
+        document.getElementById("registrationContainer").style.display = "none";
+        document.getElementById("successContainer").style.display = "block";
+    }
+});
