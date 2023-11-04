@@ -57,7 +57,7 @@ function makeSystemMove() {
 
     if (gameBoard.every(cell => cell !== '')) {
         gameActive = false;
-        resultMessage.textContent = 'It\'s a draw!';
+        resultMessage.textContent = 'Its a draw!';
         return;
     }
 
